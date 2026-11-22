@@ -20,15 +20,13 @@ jobs:
         run: |
           git clone --recursive https://github.com/theos/theos.git "$HOME/theos"
           mkdir -p "$HOME/theos/sdks"
-          curl -L https://github.com/theos/sdks/archive/master.zip -o sdks.zip
-          unzip -q sdks.zip
+          curl -L https://github.com/theos/sdks/archive/master.tar.gz | tar -xz
           mv sdks-master/*.sdk "$HOME/theos/sdks/"
-          rm -rf sdks.zip sdks-master
+          rm -rf sdks-master
 
       - name: Build Rootless DEB
         run: |
           export THEOS="$HOME/theos"
-          ls -la
           make clean package FINALPACKAGE=1 THEOS_PACKAGE_SCHEME=rootless
 
       - name: Upload DEB Artifact
