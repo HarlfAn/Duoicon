@@ -1,0 +1,9 @@
+Package: com.ouyangjihe.crispduostatus
+Name: CrispDuoStatus
+Version: 1.0.0
+Architecture: iphoneos-arm64
+Description: 矢量高清状态栏胶囊与星环插件，支持无限制坐标/尺寸精确输入与多状态动态配色
+Maintainer: OuyangJihe
+Author: OuyangJihe
+Section: Tweaks
+Depends: mobilesubstrate (>= 0.9.5000), preferenceloader
