@@ -7,29 +7,28 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install dependencies
+      - name: Install packaging dependencies
         run: |
-          sudo apt-get update
-          sudo apt-get install -y fakeroot dpkg-dev git curl unzip clang lld make perl
+          brew install dpkg ldid
 
       - name: Setup Theos & iOS SDK
         run: |
-          git clone --recursive https://github.com/theos/theos.git ~/theos
-          mkdir -p ~/theos/sdks
+          git clone --recursive https://github.com/theos/theos.git "$HOME/theos"
+          mkdir -p "$HOME/theos/sdks"
           curl -L https://github.com/theos/sdks/archive/master.zip -o sdks.zip
           unzip -q sdks.zip
-          mv sdks-master/*.sdk ~/theos/sdks/
+          mv sdks-master/*.sdk "$HOME/theos/sdks/"
           rm -rf sdks.zip sdks-master
 
       - name: Build Rootless DEB
-        env:
-          THEOS: /home/runner/theos
         run: |
+          export THEOS="$HOME/theos"
+          ls -la
           make clean package FINALPACKAGE=1 THEOS_PACKAGE_SCHEME=rootless
 
       - name: Upload DEB Artifact
