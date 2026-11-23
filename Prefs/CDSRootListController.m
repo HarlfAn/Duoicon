@@ -1,8 +1,32 @@
 #import "CDSRootListController.h"
+#import <Preferences/PSTableCell.h>
 #import <spawn.h>
 
 #define kPrefsSuite @"com.ouyangjihe.crispduostatus"
 #define kPrefsChangedNotification "com.ouyangjihe.crispduostatus/ReloadPrefs"
+
+@interface CDSValueButtonCell : PSTableCell
+@end
+
+@implementation CDSValueButtonCell
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier specifier:(PSSpecifier *)specifier {
+    self = [super initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:reuseIdentifier specifier:specifier];
+    return self;
+}
+
+- (void)refreshCellContentsWithSpecifier:(PSSpecifier *)specifier {
+    [super refreshCellContentsWithSpecifier:specifier];
+    NSString *lookupKey = [specifier propertyForKey:@"targetKey"] ?: [specifier propertyForKey:@"key"];
+    id defaultVal = [specifier propertyForKey:@"default"];
+    NSUserDefaults *defaults = [[NSUserDefaults alloc] initWithSuiteName:kPrefsSuite];
+    id val = lookupKey ? ([defaults objectForKey:lookupKey] ?: defaultVal) : nil;
+    if (val != nil) {
+        self.detailTextLabel.text = [NSString stringWithFormat:@"%@", val];
+    } else {
+        self.detailTextLabel.text = @"";
+    }
+}
+@end
 
 @implementation CDSRootListController
 
@@ -29,10 +53,11 @@
         [defaults setObject:value forKey:key];
         [defaults synchronize];
     }
+    [self reloadSpecifier:specifier animated:NO];
     CFNotificationCenterPostNotification(CFNotificationCenterGetDarwinNotifyCenter(), CFSTR(kPrefsChangedNotification), NULL, NULL, YES);
 }
 
-#pragma mark - 精确数值输入（支持任意正负数与小数，无上限）
+#pragma mark - 精确数值输入（支持任意正负数与小数，无上下限）
 
 - (void)promptExactNumericInput:(PSSpecifier *)specifier {
     NSString *targetKey = [specifier propertyForKey:@"targetKey"];
@@ -43,7 +68,7 @@
     id currentVal = [defaults objectForKey:targetKey] ?: defaultVal;
 
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:title
-                                                                   message:@"支持输入任意正数、负数与小数（无滑块范围限制）"
+                                                                   message:@"支持输入任意正数、负数与小数（无范围限制）"
                                                             preferredStyle:UIAlertControllerStyleAlert];
     [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
         textField.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
@@ -65,13 +90,44 @@
         if (sliderSpec) {
             [self reloadSpecifier:sliderSpec animated:YES];
         }
+        [self reloadSpecifier:specifier animated:YES];
         CFNotificationCenterPostNotification(CFNotificationCenterGetDarwinNotifyCenter(), CFSTR(kPrefsChangedNotification), NULL, NULL, YES);
     }]];
 
     [self presentViewController:alert animated:YES completion:nil];
 }
 
-#pragma mark - 系统原生调色盘 + Hex 色值输入（方案 A）
+#pragma mark - 自定义文本输入（日期格式 / 状态栏附加文本）
+
+- (void)promptExactTextInput:(PSSpecifier *)specifier {
+    NSString *targetKey = [specifier propertyForKey:@"targetKey"];
+    NSString *title = [specifier propertyForKey:@"label"] ?: @"输入自定义文本";
+    NSString *defaultVal = [specifier propertyForKey:@"default"] ?: @"";
+
+    NSUserDefaults *defaults = [[NSUserDefaults alloc] initWithSuiteName:kPrefsSuite];
+    NSString *currentVal = [defaults stringForKey:targetKey] ?: defaultVal;
+
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:title
+                                                                   message:@"留空并保存可清空内容"
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+        textField.text = currentVal;
+        textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+    }];
+
+    [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
+    [alert addAction:[UIAlertAction actionWithTitle:@"保存" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        NSString *input = alert.textFields.firstObject.text ?: @"";
+        [defaults setObject:input forKey:targetKey];
+        [defaults synchronize];
+        [self reloadSpecifier:specifier animated:YES];
+        CFNotificationCenterPostNotification(CFNotificationCenterGetDarwinNotifyCenter(), CFSTR(kPrefsChangedNotification), NULL, NULL, YES);
+    }]];
+
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
+#pragma mark - 系统原生调色盘 + Hex 色值输入
 
 - (UIColor *)colorFromHex:(NSString *)hexString {
     NSString *clean = [[hexString stringByReplacingOccurrencesOfString:@"#" withString:@""] uppercaseString];
@@ -142,7 +198,6 @@
 
     [sheet addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
 
-    // 兼容 iPad Popover 锚点
     UIPopoverPresentationController *popover = sheet.popoverPresentationController;
     if (popover) {
         popover.sourceView = self.view;
@@ -163,7 +218,7 @@
 
 - (void)resetAllSettings {
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"重置所有配置"
-                                                                   message:@"确定将全部位置、尺寸与状态配色恢复为出厂默认值吗？"
+                                                                   message:@"确定将全部位置、尺寸、状态栏过滤与状态配色恢复为出厂默认值吗？"
                                                             preferredStyle:UIAlertControllerStyleAlert];
     [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
     [alert addAction:[UIAlertAction actionWithTitle:@"重置" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
