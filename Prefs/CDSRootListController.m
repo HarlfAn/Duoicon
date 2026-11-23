@@ -242,3 +242,50 @@
 }
 
 @end
+e:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+        [self setPreferenceValue:defaultHex specifier:specifier];
+    }]];
+
+    [sheet addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
+
+    UIPopoverPresentationController *popover = sheet.popoverPresentationController;
+    if (popover) {
+        popover.sourceView = self.view;
+        popover.sourceRect = CGRectMake(self.view.bounds.size.width * 0.5, self.view.bounds.size.height * 0.5, 1, 1);
+        popover.permittedArrowDirections = 0;
+    }
+
+    [self presentViewController:sheet animated:YES completion:nil];
+}
+
+- (void)colorPickerViewControllerDidSelectColor:(UIColorPickerViewController *)viewController API_AVAILABLE(ios(14.0)) {
+    if (!self.activeColorSpecifier) return;
+    NSString *hex = [self hexFromColor:viewController.selectedColor];
+    [self setPreferenceValue:hex specifier:self.activeColorSpecifier];
+}
+
+#pragma mark - 维护动作
+
+- (void)resetAllSettings {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"重置所有配置"
+                                                                   message:@"确定将全部位置、尺寸、状态栏过滤与状态配色恢复为出厂默认值吗？"
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
+    [alert addAction:[UIAlertAction actionWithTitle:@"重置" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+        NSUserDefaults *defaults = [[NSUserDefaults alloc] initWithSuiteName:kPrefsSuite];
+        [defaults removePersistentDomainForName:kPrefsSuite];
+        [defaults synchronize];
+        _specifiers = nil;
+        [self reloadSpecifiers];
+        CFNotificationCenterPostNotification(CFNotificationCenterGetDarwinNotifyCenter(), CFSTR(kPrefsChangedNotification), NULL, NULL, YES);
+    }]];
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
+- (void)respringDevice {
+    pid_t pid;
+    const char *args[] = {"killall", "-9", "SpringBoard", NULL};
+    posix_spawn(&pid, "/var/jb/usr/bin/killall", NULL, NULL, (char *const *)args, NULL);
+}
+
+@end
