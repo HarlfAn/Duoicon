@@ -13,7 +13,7 @@
 			<key>label</key>
 			<string>核心模式与形态</string>
 			<key>footerText</key>
-			<string>纯矢量实时绘制，仅接管状态栏右侧区域，完全保留左侧功耗/状态插件。</string>
+			<string>纯矢量实时绘制，仅隐藏系统原生状态栏组件，自动保留第三方功耗插件（如 BatteryETA）。</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -50,14 +50,40 @@
 			</array>
 		</dict>
 
-		<!-- 2. 交互与手势 -->
+		<!-- 2. 原生状态栏元素隐藏（解决不对齐残留图标） -->
 		<dict>
 			<key>cell</key>
 			<string>PSGroupCell</string>
 			<key>label</key>
-			<string>交互与手势动作</string>
+			<string>原生状态栏显示过滤（隐藏不对齐元素）</string>
 			<key>footerText</key>
-			<string>自动合拢时间设为 0 时，需再次点击才会收起原生状态栏。</string>
+			<string>可将不对齐的原生日期、耳机/投屏/定位图标或左侧原生元素单独隐藏，仅作用于系统原生视图，绝不误伤左侧自定义插件。</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSButtonCell</string>
+			<key>cellClass</key>
+			<string>CDSValueButtonCell</string>
+			<key>action</key>
+			<string>promptExactNumericInput:</string>
+			<key>targetKey</key>
+			<string>rightHideStartRatio</string>
+			<key>default</key>
+			<real>0.42</real>
+			<key>label</key>
+			<string>右侧原生隐藏起始位置比例 (0.0~1.0)</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.ouyangjihe.crispduostatus</string>
+			<key>key</key>
+			<string>hideNativeLeftItems</string>
+			<key>label</key>
+			<string>隐藏左侧全部原生状态栏项</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -67,39 +93,9 @@
 			<key>defaults</key>
 			<string>com.ouyangjihe.crispduostatus</string>
 			<key>key</key>
-			<string>tapToExpand</string>
+			<string>hideNativeTime</string>
 			<key>label</key>
-			<string>轻点展开原生信号/Wi-Fi/电池</string>
-		</dict>
-		<dict>
-			<key>cell</key>
-			<string>PSSliderCell</string>
-			<key>id</key>
-			<string>collapseDelay</string>
-			<key>default</key>
-			<real>3.0</real>
-			<key>min</key>
-			<real>0.0</real>
-			<key>max</key>
-			<real>10.0</real>
-			<key>showValue</key>
-			<true/>
-			<key>defaults</key>
-			<string>com.ouyangjihe.crispduostatus</string>
-			<key>key</key>
-			<string>collapseDelay</string>
-		</dict>
-		<dict>
-			<key>cell</key>
-			<string>PSButtonCell</string>
-			<key>action</key>
-			<string>promptExactNumericInput:</string>
-			<key>targetKey</key>
-			<string>collapseDelay</string>
-			<key>default</key>
-			<real>3.0</real>
-			<key>label</key>
-			<string>输入精确自动合拢秒数...</string>
+			<string>隐藏原生时间</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -109,181 +105,77 @@
 			<key>defaults</key>
 			<string>com.ouyangjihe.crispduostatus</string>
 			<key>key</key>
-			<string>hapticFeedback</string>
+			<string>hideNativeDate</string>
 			<key>label</key>
-			<string>操作触感震动反馈</string>
+			<string>隐藏原生日期</string>
 		</dict>
 		<dict>
 			<key>cell</key>
-			<string>PSLinkListCell</string>
+			<string>PSSwitchCell</string>
 			<key>default</key>
-			<integer>1</integer>
+			<true/>
 			<key>defaults</key>
 			<string>com.ouyangjihe.crispduostatus</string>
-			<key>detail</key>
-			<string>PSListItemsController</string>
 			<key>key</key>
-			<string>longPressAction</string>
+			<string>hideNativeIndicators</string>
 			<key>label</key>
-			<string>长按快捷动作</string>
-			<key>validTitles</key>
-			<array>
-				<string>无动作</string>
-				<string>切换低电量模式</string>
-				<string>强制刷新网络/VPN状态</string>
-				<string>重新加载 SpringBoard</string>
-			</array>
-			<key>validValues</key>
-			<array>
-				<integer>0</integer>
-				<integer>1</integer>
-				<integer>2</integer>
-				<integer>3</integer>
-			</array>
+			<string>隐藏原生系统图标（耳机/投屏/定位/勿扰/闹钟）</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<true/>
+			<key>defaults</key>
+			<string>com.ouyangjihe.crispduostatus</string>
+			<key>key</key>
+			<string>hideNativeBattery</string>
+			<key>label</key>
+			<string>隐藏原生电池与百分比</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<true/>
+			<key>defaults</key>
+			<string>com.ouyangjihe.crispduostatus</string>
+			<key>key</key>
+			<string>hideNativeWifi</string>
+			<key>label</key>
+			<string>隐藏原生 Wi-Fi 图标</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<true/>
+			<key>defaults</key>
+			<string>com.ouyangjihe.crispduostatus</string>
+			<key>key</key>
+			<string>hideNativeCellular</string>
+			<key>label</key>
+			<string>隐藏原生蜂窝信号图标</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.ouyangjihe.crispduostatus</string>
+			<key>key</key>
+			<string>hideNativeBreadcrumb</string>
+			<key>label</key>
+			<string>隐藏左上角返回 App 面包屑</string>
 		</dict>
 
-		<!-- 3. 无限制 X/Y 坐标与尺寸（支持精确数值输入） -->
+		<!-- 3. 自定义组件内部显示内容 -->
 		<dict>
 			<key>cell</key>
 			<string>PSGroupCell</string>
 			<key>label</key>
-			<string>无限制坐标与缩放微调</string>
-			<key>footerText</key>
-			<string>滑块用于快速预览，点击下方按钮可输入任意正负数或小数，不受任何边界限制。</string>
-		</dict>
-		<dict>
-			<key>cell</key>
-			<string>PSSliderCell</string>
-			<key>id</key>
-			<string>offsetX</string>
-			<key>default</key>
-			<real>0.0</real>
-			<key>min</key>
-			<real>-200.0</real>
-			<key>max</key>
-			<real>200.0</real>
-			<key>showValue</key>
-			<true/>
-			<key>defaults</key>
-			<string>com.ouyangjihe.crispduostatus</string>
-			<key>key</key>
-			<string>offsetX</string>
-		</dict>
-		<dict>
-			<key>cell</key>
-			<string>PSButtonCell</string>
-			<key>action</key>
-			<string>promptExactNumericInput:</string>
-			<key>targetKey</key>
-			<string>offsetX</string>
-			<key>default</key>
-			<real>0.0</real>
-			<key>label</key>
-			<string>输入精确 X 轴偏移值（正右负左）...</string>
-		</dict>
-		<dict>
-			<key>cell</key>
-			<string>PSSliderCell</string>
-			<key>id</key>
-			<string>offsetY</string>
-			<key>default</key>
-			<real>0.0</real>
-			<key>min</key>
-			<real>-50.0</real>
-			<key>max</key>
-			<real>50.0</real>
-			<key>showValue</key>
-			<true/>
-			<key>defaults</key>
-			<string>com.ouyangjihe.crispduostatus</string>
-			<key>key</key>
-			<string>offsetY</string>
-		</dict>
-		<dict>
-			<key>cell</key>
-			<string>PSButtonCell</string>
-			<key>action</key>
-			<string>promptExactNumericInput:</string>
-			<key>targetKey</key>
-			<string>offsetY</string>
-			<key>default</key>
-			<real>0.0</real>
-			<key>label</key>
-			<string>输入精确 Y 轴偏移值（正下负上）...</string>
-		</dict>
-		<dict>
-			<key>cell</key>
-			<string>PSSliderCell</string>
-			<key>id</key>
-			<string>scale</string>
-			<key>default</key>
-			<real>1.0</real>
-			<key>min</key>
-			<real>0.5</real>
-			<key>max</key>
-			<real>2.5</real>
-			<key>showValue</key>
-			<true/>
-			<key>defaults</key>
-			<string>com.ouyangjihe.crispduostatus</string>
-			<key>key</key>
-			<string>scale</string>
-		</dict>
-		<dict>
-			<key>cell</key>
-			<string>PSButtonCell</string>
-			<key>action</key>
-			<string>promptExactNumericInput:</string>
-			<key>targetKey</key>
-			<string>scale</string>
-			<key>default</key>
-			<real>1.0</real>
-			<key>label</key>
-			<string>输入精确整体缩放倍数（默认 1.0）...</string>
-		</dict>
-		<dict>
-			<key>cell</key>
-			<string>PSButtonCell</string>
-			<key>action</key>
-			<string>promptExactNumericInput:</string>
-			<key>targetKey</key>
-			<string>cornerRadius</string>
-			<key>default</key>
-			<real>-1.0</real>
-			<key>label</key>
-			<string>输入精确胶囊圆角半径（-1 为全自动圆弧）...</string>
-		</dict>
-		<dict>
-			<key>cell</key>
-			<string>PSButtonCell</string>
-			<key>action</key>
-			<string>promptExactNumericInput:</string>
-			<key>targetKey</key>
-			<string>horizontalPadding</string>
-			<key>default</key>
-			<real>8.0</real>
-			<key>label</key>
-			<string>输入精确胶囊左右内边距（默认 8.0）...</string>
-		</dict>
-		<dict>
-			<key>cell</key>
-			<string>PSButtonCell</string>
-			<key>action</key>
-			<string>promptExactNumericInput:</string>
-			<key>targetKey</key>
-			<string>borderWidth</string>
-			<key>default</key>
-			<real>1.0</real>
-			<key>label</key>
-			<string>输入精确边框线宽（0 为无边框）...</string>
-		</dict>
-
-		<!-- 4. 字体与显示元素细节 -->
-		<dict>
-			<key>cell</key>
-			<string>PSGroupCell</string>
-			<key>label</key>
-			<string>时间、电量与网络元素</string>
+			<string>自定义组件显示内容（时间 / 日期 / 标签 / 电量）</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -323,7 +215,69 @@
 		</dict>
 		<dict>
 			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.ouyangjihe.crispduostatus</string>
+			<key>key</key>
+			<string>showDate</string>
+			<key>label</key>
+			<string>在时间旁显示日期</string>
+		</dict>
+		<dict>
+			<key>cell</key>
 			<string>PSButtonCell</string>
+			<key>cellClass</key>
+			<string>CDSValueButtonCell</string>
+			<key>action</key>
+			<string>promptExactTextInput:</string>
+			<key>targetKey</key>
+			<string>dateFormat</string>
+			<key>default</key>
+			<string>M/d</string>
+			<key>label</key>
+			<string>自定义日期格式（如 M/d 或 MM-dd）</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSButtonCell</string>
+			<key>cellClass</key>
+			<string>CDSValueButtonCell</string>
+			<key>action</key>
+			<string>promptExactTextInput:</string>
+			<key>targetKey</key>
+			<string>customTagText</string>
+			<key>default</key>
+			<string></string>
+			<key>label</key>
+			<string>自定义附加文字标签（留空不显示）</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSegmentCell</string>
+			<key>default</key>
+			<integer>0</integer>
+			<key>defaults</key>
+			<string>com.ouyangjihe.crispduostatus</string>
+			<key>key</key>
+			<string>customTagPosition</string>
+			<key>validTitles</key>
+			<array>
+				<string>标签在时间前</string>
+				<string>标签在时间后</string>
+			</array>
+			<key>validValues</key>
+			<array>
+				<integer>0</integer>
+				<integer>1</integer>
+			</array>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSButtonCell</string>
+			<key>cellClass</key>
+			<string>CDSValueButtonCell</string>
 			<key>action</key>
 			<string>promptExactNumericInput:</string>
 			<key>targetKey</key>
@@ -331,7 +285,7 @@
 			<key>default</key>
 			<real>12.0</real>
 			<key>label</key>
-			<string>输入精确时间字号（默认 12.0）...</string>
+			<string>时间与文本字号</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -406,6 +360,8 @@
 		<dict>
 			<key>cell</key>
 			<string>PSButtonCell</string>
+			<key>cellClass</key>
+			<string>CDSValueButtonCell</string>
 			<key>action</key>
 			<string>promptExactNumericInput:</string>
 			<key>targetKey</key>
@@ -413,7 +369,7 @@
 			<key>default</key>
 			<real>9.0</real>
 			<key>label</key>
-			<string>输入精确电量数字字号（默认 9.0）...</string>
+			<string>电量数字字号</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -440,7 +396,245 @@
 			<string>显示 Wi-Fi / 蜂窝 / VPN 矢量图标</string>
 		</dict>
 
-		<!-- 5. 分模式 / 分状态独立动态配色 -->
+		<!-- 4. 无限制 X/Y 坐标与尺寸（支持精确数值输入） -->
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>无限制坐标与缩放微调</string>
+			<key>footerText</key>
+			<string>滑块用于快速预览，点击数值行可输入任意正负数或小数，不受任何边界限制。</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSliderCell</string>
+			<key>id</key>
+			<string>offsetX</string>
+			<key>default</key>
+			<real>0.0</real>
+			<key>min</key>
+			<real>-200.0</real>
+			<key>max</key>
+			<real>200.0</real>
+			<key>showValue</key>
+			<true/>
+			<key>defaults</key>
+			<string>com.ouyangjihe.crispduostatus</string>
+			<key>key</key>
+			<string>offsetX</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSButtonCell</string>
+			<key>cellClass</key>
+			<string>CDSValueButtonCell</string>
+			<key>action</key>
+			<string>promptExactNumericInput:</string>
+			<key>targetKey</key>
+			<string>offsetX</string>
+			<key>default</key>
+			<real>0.0</real>
+			<key>label</key>
+			<string>输入精确 X 轴偏移值（正右负左）</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSliderCell</string>
+			<key>id</key>
+			<string>offsetY</string>
+			<key>default</key>
+			<real>0.0</real>
+			<key>min</key>
+			<real>-50.0</real>
+			<key>max</key>
+			<real>50.0</real>
+			<key>showValue</key>
+			<true/>
+			<key>defaults</key>
+			<string>com.ouyangjihe.crispduostatus</string>
+			<key>key</key>
+			<string>offsetY</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSButtonCell</string>
+			<key>cellClass</key>
+			<string>CDSValueButtonCell</string>
+			<key>action</key>
+			<string>promptExactNumericInput:</string>
+			<key>targetKey</key>
+			<string>offsetY</string>
+			<key>default</key>
+			<real>0.0</real>
+			<key>label</key>
+			<string>输入精确 Y 轴偏移值（正下负上）</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSliderCell</string>
+			<key>id</key>
+			<string>scale</string>
+			<key>default</key>
+			<real>1.0</real>
+			<key>min</key>
+			<real>0.5</real>
+			<key>max</key>
+			<real>2.5</real>
+			<key>showValue</key>
+			<true/>
+			<key>defaults</key>
+			<string>com.ouyangjihe.crispduostatus</string>
+			<key>key</key>
+			<string>scale</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSButtonCell</string>
+			<key>cellClass</key>
+			<string>CDSValueButtonCell</string>
+			<key>action</key>
+			<string>promptExactNumericInput:</string>
+			<key>targetKey</key>
+			<string>scale</string>
+			<key>default</key>
+			<real>1.0</real>
+			<key>label</key>
+			<string>输入精确整体缩放倍数</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSButtonCell</string>
+			<key>cellClass</key>
+			<string>CDSValueButtonCell</string>
+			<key>action</key>
+			<string>promptExactNumericInput:</string>
+			<key>targetKey</key>
+			<string>cornerRadius</string>
+			<key>default</key>
+			<real>-1.0</real>
+			<key>label</key>
+			<string>胶囊圆角半径（-1 为全自动圆弧）</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSButtonCell</string>
+			<key>cellClass</key>
+			<string>CDSValueButtonCell</string>
+			<key>action</key>
+			<string>promptExactNumericInput:</string>
+			<key>targetKey</key>
+			<string>horizontalPadding</string>
+			<key>default</key>
+			<real>8.0</real>
+			<key>label</key>
+			<string>胶囊左右内边距</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSButtonCell</string>
+			<key>cellClass</key>
+			<string>CDSValueButtonCell</string>
+			<key>action</key>
+			<string>promptExactNumericInput:</string>
+			<key>targetKey</key>
+			<string>itemSpacing</string>
+			<key>default</key>
+			<real>4.5</real>
+			<key>label</key>
+			<string>组件内部元素间距</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSButtonCell</string>
+			<key>cellClass</key>
+			<string>CDSValueButtonCell</string>
+			<key>action</key>
+			<string>promptExactNumericInput:</string>
+			<key>targetKey</key>
+			<string>borderWidth</string>
+			<key>default</key>
+			<real>1.0</real>
+			<key>label</key>
+			<string>边框线宽（0 为无边框）</string>
+		</dict>
+
+		<!-- 5. 交互与手势 -->
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>交互与手势动作</string>
+			<key>footerText</key>
+			<string>自动合拢时间设为 0 时，需再次点击才会收起原生状态栏。</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<true/>
+			<key>defaults</key>
+			<string>com.ouyangjihe.crispduostatus</string>
+			<key>key</key>
+			<string>tapToExpand</string>
+			<key>label</key>
+			<string>轻点展开原生信号/Wi-Fi/电池</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSButtonCell</string>
+			<key>cellClass</key>
+			<string>CDSValueButtonCell</string>
+			<key>action</key>
+			<string>promptExactNumericInput:</string>
+			<key>targetKey</key>
+			<string>collapseDelay</string>
+			<key>default</key>
+			<real>3.0</real>
+			<key>label</key>
+			<string>自动合拢延迟秒数</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<true/>
+			<key>defaults</key>
+			<string>com.ouyangjihe.crispduostatus</string>
+			<key>key</key>
+			<string>hapticFeedback</string>
+			<key>label</key>
+			<string>操作触感震动反馈</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSLinkListCell</string>
+			<key>default</key>
+			<integer>1</integer>
+			<key>defaults</key>
+			<string>com.ouyangjihe.crispduostatus</string>
+			<key>detail</key>
+			<string>PSListItemsController</string>
+			<key>key</key>
+			<string>longPressAction</string>
+			<key>label</key>
+			<string>长按快捷动作</string>
+			<key>validTitles</key>
+			<array>
+				<string>无动作</string>
+				<string>切换低电量模式</string>
+				<string>强制刷新网络/VPN状态</string>
+				<string>重新加载 SpringBoard</string>
+			</array>
+			<key>validValues</key>
+			<array>
+				<integer>0</integer>
+				<integer>1</integer>
+				<integer>2</integer>
+				<integer>3</integer>
+			</array>
+		</dict>
+
+		<!-- 6. 分模式 / 分状态独立动态配色 -->
 		<dict>
 			<key>cell</key>
 			<string>PSGroupCell</string>
@@ -452,6 +646,8 @@
 		<dict>
 			<key>cell</key>
 			<string>PSButtonCell</string>
+			<key>cellClass</key>
+			<string>CDSValueButtonCell</string>
 			<key>action</key>
 			<string>openColorOptions:</string>
 			<key>key</key>
@@ -464,6 +660,8 @@
 		<dict>
 			<key>cell</key>
 			<string>PSButtonCell</string>
+			<key>cellClass</key>
+			<string>CDSValueButtonCell</string>
 			<key>action</key>
 			<string>openColorOptions:</string>
 			<key>key</key>
@@ -488,6 +686,8 @@
 		<dict>
 			<key>cell</key>
 			<string>PSButtonCell</string>
+			<key>cellClass</key>
+			<string>CDSValueButtonCell</string>
 			<key>action</key>
 			<string>openColorOptions:</string>
 			<key>key</key>
@@ -512,6 +712,8 @@
 		<dict>
 			<key>cell</key>
 			<string>PSButtonCell</string>
+			<key>cellClass</key>
+			<string>CDSValueButtonCell</string>
 			<key>action</key>
 			<string>openColorOptions:</string>
 			<key>key</key>
@@ -524,6 +726,8 @@
 		<dict>
 			<key>cell</key>
 			<string>PSButtonCell</string>
+			<key>cellClass</key>
+			<string>CDSValueButtonCell</string>
 			<key>action</key>
 			<string>promptExactNumericInput:</string>
 			<key>targetKey</key>
@@ -531,7 +735,7 @@
 			<key>default</key>
 			<integer>20</integer>
 			<key>label</key>
-			<string>自定义低电量触发百分比（默认 20%）...</string>
+			<string>低电量触发百分比阈值</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -548,6 +752,8 @@
 		<dict>
 			<key>cell</key>
 			<string>PSButtonCell</string>
+			<key>cellClass</key>
+			<string>CDSValueButtonCell</string>
 			<key>action</key>
 			<string>openColorOptions:</string>
 			<key>key</key>
@@ -572,6 +778,8 @@
 		<dict>
 			<key>cell</key>
 			<string>PSButtonCell</string>
+			<key>cellClass</key>
+			<string>CDSValueButtonCell</string>
 			<key>action</key>
 			<string>openColorOptions:</string>
 			<key>key</key>
@@ -604,6 +812,8 @@
 		<dict>
 			<key>cell</key>
 			<string>PSButtonCell</string>
+			<key>cellClass</key>
+			<string>CDSValueButtonCell</string>
 			<key>action</key>
 			<string>openColorOptions:</string>
 			<key>key</key>
@@ -611,11 +821,13 @@
 			<key>default</key>
 			<string>#FFFFFF55</string>
 			<key>label</key>
-			<string>胶囊背景色 · 浅色模式（支持透明度）</string>
+			<string>胶囊背景色 · 浅色模式</string>
 		</dict>
 		<dict>
 			<key>cell</key>
 			<string>PSButtonCell</string>
+			<key>cellClass</key>
+			<string>CDSValueButtonCell</string>
 			<key>action</key>
 			<string>openColorOptions:</string>
 			<key>key</key>
@@ -623,11 +835,13 @@
 			<key>default</key>
 			<string>#1C1C1E88</string>
 			<key>label</key>
-			<string>胶囊背景色 · 深色模式（支持透明度）</string>
+			<string>胶囊背景色 · 深色模式</string>
 		</dict>
 		<dict>
 			<key>cell</key>
 			<string>PSButtonCell</string>
+			<key>cellClass</key>
+			<string>CDSValueButtonCell</string>
 			<key>action</key>
 			<string>openColorOptions:</string>
 			<key>key</key>
@@ -638,7 +852,7 @@
 			<string>胶囊边框描边色</string>
 		</dict>
 
-		<!-- 6. 维护 -->
+		<!-- 7. 维护 -->
 		<dict>
 			<key>cell</key>
 			<string>PSGroupCell</string>
@@ -664,3 +878,4 @@
 	</array>
 </dict>
 </plist>
+
