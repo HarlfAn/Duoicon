@@ -62,8 +62,6 @@
 		<dict>
 			<key>cell</key>
 			<string>PSButtonCell</string>
-			<key>cellClass</key>
-			<string>CDSValueButtonCell</string>
 			<key>action</key>
 			<string>promptExactNumericInput:</string>
 			<key>targetKey</key>
@@ -71,7 +69,7 @@
 			<key>default</key>
 			<real>0.42</real>
 			<key>label</key>
-			<string>右侧原生隐藏起始位置比例 (0.0~1.0)</string>
+			<string>右侧原生隐藏起始比例 (0.0~1.0)</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -228,8 +226,6 @@
 		<dict>
 			<key>cell</key>
 			<string>PSButtonCell</string>
-			<key>cellClass</key>
-			<string>CDSValueButtonCell</string>
 			<key>action</key>
 			<string>promptExactTextInput:</string>
 			<key>targetKey</key>
@@ -237,13 +233,11 @@
 			<key>default</key>
 			<string>M/d</string>
 			<key>label</key>
-			<string>自定义日期格式（如 M/d 或 MM-dd）</string>
+			<string>自定义日期格式</string>
 		</dict>
 		<dict>
 			<key>cell</key>
 			<string>PSButtonCell</string>
-			<key>cellClass</key>
-			<string>CDSValueButtonCell</string>
 			<key>action</key>
 			<string>promptExactTextInput:</string>
 			<key>targetKey</key>
@@ -251,7 +245,7 @@
 			<key>default</key>
 			<string></string>
 			<key>label</key>
-			<string>自定义附加文字标签（留空不显示）</string>
+			<string>自定义附加文字标签</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -276,8 +270,6 @@
 		<dict>
 			<key>cell</key>
 			<string>PSButtonCell</string>
-			<key>cellClass</key>
-			<string>CDSValueButtonCell</string>
 			<key>action</key>
 			<string>promptExactNumericInput:</string>
 			<key>targetKey</key>
@@ -360,8 +352,6 @@
 		<dict>
 			<key>cell</key>
 			<string>PSButtonCell</string>
-			<key>cellClass</key>
-			<string>CDSValueButtonCell</string>
 			<key>action</key>
 			<string>promptExactNumericInput:</string>
 			<key>targetKey</key>
@@ -426,8 +416,6 @@
 		<dict>
 			<key>cell</key>
 			<string>PSButtonCell</string>
-			<key>cellClass</key>
-			<string>CDSValueButtonCell</string>
 			<key>action</key>
 			<string>promptExactNumericInput:</string>
 			<key>targetKey</key>
@@ -435,7 +423,7 @@
 			<key>default</key>
 			<real>0.0</real>
 			<key>label</key>
-			<string>输入精确 X 轴偏移值（正右负左）</string>
+			<string>输入精确 X 轴偏移（正右负左）</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -458,8 +446,6 @@
 		<dict>
 			<key>cell</key>
 			<string>PSButtonCell</string>
-			<key>cellClass</key>
-			<string>CDSValueButtonCell</string>
 			<key>action</key>
 			<string>promptExactNumericInput:</string>
 			<key>targetKey</key>
@@ -467,7 +453,7 @@
 			<key>default</key>
 			<real>0.0</real>
 			<key>label</key>
-			<string>输入精确 Y 轴偏移值（正下负上）</string>
+			<string>输入精确 Y 轴偏移（正下负上）</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -490,8 +476,6 @@
 		<dict>
 			<key>cell</key>
 			<string>PSButtonCell</string>
-			<key>cellClass</key>
-			<string>CDSValueButtonCell</string>
 			<key>action</key>
 			<string>promptExactNumericInput:</string>
 			<key>targetKey</key>
@@ -504,8 +488,6 @@
 		<dict>
 			<key>cell</key>
 			<string>PSButtonCell</string>
-			<key>cellClass</key>
-			<string>CDSValueButtonCell</string>
 			<key>action</key>
 			<string>promptExactNumericInput:</string>
 			<key>targetKey</key>
@@ -513,13 +495,11 @@
 			<key>default</key>
 			<real>-1.0</real>
 			<key>label</key>
-			<string>胶囊圆角半径（-1 为全自动圆弧）</string>
+			<string>胶囊圆角半径（-1 为全自动）</string>
 		</dict>
 		<dict>
 			<key>cell</key>
 			<string>PSButtonCell</string>
-			<key>cellClass</key>
-			<string>CDSValueButtonCell</string>
 			<key>action</key>
 			<string>promptExactNumericInput:</string>
 			<key>targetKey</key>
@@ -532,8 +512,6 @@
 		<dict>
 			<key>cell</key>
 			<string>PSButtonCell</string>
-			<key>cellClass</key>
-			<string>CDSValueButtonCell</string>
 			<key>action</key>
 			<string>promptExactNumericInput:</string>
 			<key>targetKey</key>
@@ -546,8 +524,6 @@
 		<dict>
 			<key>cell</key>
 			<string>PSButtonCell</string>
-			<key>cellClass</key>
-			<string>CDSValueButtonCell</string>
 			<key>action</key>
 			<string>promptExactNumericInput:</string>
 			<key>targetKey</key>
@@ -582,8 +558,6 @@
 		<dict>
 			<key>cell</key>
 			<string>PSButtonCell</string>
-			<key>cellClass</key>
-			<string>CDSValueButtonCell</string>
 			<key>action</key>
 			<string>promptExactNumericInput:</string>
 			<key>targetKey</key>
@@ -646,8 +620,6 @@
 		<dict>
 			<key>cell</key>
 			<string>PSButtonCell</string>
-			<key>cellClass</key>
-			<string>CDSValueButtonCell</string>
 			<key>action</key>
 			<string>openColorOptions:</string>
 			<key>key</key>
@@ -660,8 +632,6 @@
 		<dict>
 			<key>cell</key>
 			<string>PSButtonCell</string>
-			<key>cellClass</key>
-			<string>CDSValueButtonCell</string>
 			<key>action</key>
 			<string>openColorOptions:</string>
 			<key>key</key>
@@ -686,8 +656,6 @@
 		<dict>
 			<key>cell</key>
 			<string>PSButtonCell</string>
-			<key>cellClass</key>
-			<string>CDSValueButtonCell</string>
 			<key>action</key>
 			<string>openColorOptions:</string>
 			<key>key</key>
@@ -712,8 +680,6 @@
 		<dict>
 			<key>cell</key>
 			<string>PSButtonCell</string>
-			<key>cellClass</key>
-			<string>CDSValueButtonCell</string>
 			<key>action</key>
 			<string>openColorOptions:</string>
 			<key>key</key>
@@ -726,8 +692,6 @@
 		<dict>
 			<key>cell</key>
 			<string>PSButtonCell</string>
-			<key>cellClass</key>
-			<string>CDSValueButtonCell</string>
 			<key>action</key>
 			<string>promptExactNumericInput:</string>
 			<key>targetKey</key>
@@ -752,8 +716,6 @@
 		<dict>
 			<key>cell</key>
 			<string>PSButtonCell</string>
-			<key>cellClass</key>
-			<string>CDSValueButtonCell</string>
 			<key>action</key>
 			<string>openColorOptions:</string>
 			<key>key</key>
@@ -778,8 +740,6 @@
 		<dict>
 			<key>cell</key>
 			<string>PSButtonCell</string>
-			<key>cellClass</key>
-			<string>CDSValueButtonCell</string>
 			<key>action</key>
 			<string>openColorOptions:</string>
 			<key>key</key>
@@ -812,8 +772,6 @@
 		<dict>
 			<key>cell</key>
 			<string>PSButtonCell</string>
-			<key>cellClass</key>
-			<string>CDSValueButtonCell</string>
 			<key>action</key>
 			<string>openColorOptions:</string>
 			<key>key</key>
@@ -826,8 +784,6 @@
 		<dict>
 			<key>cell</key>
 			<string>PSButtonCell</string>
-			<key>cellClass</key>
-			<string>CDSValueButtonCell</string>
 			<key>action</key>
 			<string>openColorOptions:</string>
 			<key>key</key>
@@ -840,8 +796,6 @@
 		<dict>
 			<key>cell</key>
 			<string>PSButtonCell</string>
-			<key>cellClass</key>
-			<string>CDSValueButtonCell</string>
 			<key>action</key>
 			<string>openColorOptions:</string>
 			<key>key</key>
@@ -878,4 +832,3 @@
 	</array>
 </dict>
 </plist>
-
