@@ -1,40 +1,40 @@
 #import "CDSRootListController.h"
-#import <Preferences/PSTableCell.h>
 #import <spawn.h>
 
 #define kPrefsSuite @"com.ouyangjihe.crispduostatus"
 #define kPrefsChangedNotification "com.ouyangjihe.crispduostatus/ReloadPrefs"
-
-@interface CDSValueButtonCell : PSTableCell
-@end
-
-@implementation CDSValueButtonCell
-- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier specifier:(PSSpecifier *)specifier {
-    self = [super initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:reuseIdentifier specifier:specifier];
-    return self;
-}
-
-- (void)refreshCellContentsWithSpecifier:(PSSpecifier *)specifier {
-    [super refreshCellContentsWithSpecifier:specifier];
-    NSString *lookupKey = [specifier propertyForKey:@"targetKey"] ?: [specifier propertyForKey:@"key"];
-    id defaultVal = [specifier propertyForKey:@"default"];
-    NSUserDefaults *defaults = [[NSUserDefaults alloc] initWithSuiteName:kPrefsSuite];
-    id val = lookupKey ? ([defaults objectForKey:lookupKey] ?: defaultVal) : nil;
-    if (val != nil) {
-        self.detailTextLabel.text = [NSString stringWithFormat:@"%@", val];
-    } else {
-        self.detailTextLabel.text = @"";
-    }
-}
-@end
 
 @implementation CDSRootListController
 
 - (NSArray *)specifiers {
     if (!_specifiers) {
         _specifiers = [self loadSpecifiersFromPlistName:@"Root" target:self];
+        for (PSSpecifier *spec in _specifiers) {
+            [self updateDynamicTitleForSpecifier:spec];
+        }
     }
     return _specifiers;
+}
+
+- (void)updateDynamicTitleForSpecifier:(PSSpecifier *)specifier {
+    NSString *baseTitle = [specifier propertyForKey:@"baseTitle"];
+    if (!baseTitle) {
+        baseTitle = specifier.name ?: @"";
+        [specifier setProperty:baseTitle forKey:@"baseTitle"];
+    }
+    NSString *lookupKey = [specifier propertyForKey:@"targetKey"] ?: [specifier propertyForKey:@"key"];
+    NSString *actionStr = NSStringFromSelector(specifier->action);
+    if (!lookupKey || ![actionStr hasPrefix:@"prompt"] && ![actionStr hasPrefix:@"openColor"]) {
+        return;
+    }
+    id defaultVal = [specifier propertyForKey:@"default"];
+    NSUserDefaults *defaults = [[NSUserDefaults alloc] initWithSuiteName:kPrefsSuite];
+    id val = [defaults objectForKey:lookupKey] ?: defaultVal;
+    if (val != nil && [NSString stringWithFormat:@"%@", val].length > 0) {
+        specifier.name = [NSString stringWithFormat:@"%@（当前：%@）", baseTitle, val];
+    } else {
+        specifier.name = [NSString stringWithFormat:@"%@（当前：空）", baseTitle];
+    }
 }
 
 - (id)readPreferenceValue:(PSSpecifier *)specifier {
@@ -53,6 +53,7 @@
         [defaults setObject:value forKey:key];
         [defaults synchronize];
     }
+    [self updateDynamicTitleForSpecifier:specifier];
     [self reloadSpecifier:specifier animated:NO];
     CFNotificationCenterPostNotification(CFNotificationCenterGetDarwinNotifyCenter(), CFSTR(kPrefsChangedNotification), NULL, NULL, YES);
 }
@@ -61,7 +62,7 @@
 
 - (void)promptExactNumericInput:(PSSpecifier *)specifier {
     NSString *targetKey = [specifier propertyForKey:@"targetKey"];
-    NSString *title = [specifier propertyForKey:@"label"] ?: @"输入精确数值";
+    NSString *title = [specifier propertyForKey:@"baseTitle"] ?: @"输入精确数值";
     id defaultVal = [specifier propertyForKey:@"default"] ?: @(0);
 
     NSUserDefaults *defaults = [[NSUserDefaults alloc] initWithSuiteName:kPrefsSuite];
@@ -90,6 +91,7 @@
         if (sliderSpec) {
             [self reloadSpecifier:sliderSpec animated:YES];
         }
+        [self updateDynamicTitleForSpecifier:specifier];
         [self reloadSpecifier:specifier animated:YES];
         CFNotificationCenterPostNotification(CFNotificationCenterGetDarwinNotifyCenter(), CFSTR(kPrefsChangedNotification), NULL, NULL, YES);
     }]];
@@ -101,7 +103,7 @@
 
 - (void)promptExactTextInput:(PSSpecifier *)specifier {
     NSString *targetKey = [specifier propertyForKey:@"targetKey"];
-    NSString *title = [specifier propertyForKey:@"label"] ?: @"输入自定义文本";
+    NSString *title = [specifier propertyForKey:@"baseTitle"] ?: @"输入自定义文本";
     NSString *defaultVal = [specifier propertyForKey:@"default"] ?: @"";
 
     NSUserDefaults *defaults = [[NSUserDefaults alloc] initWithSuiteName:kPrefsSuite];
@@ -120,6 +122,7 @@
         NSString *input = alert.textFields.firstObject.text ?: @"";
         [defaults setObject:input forKey:targetKey];
         [defaults synchronize];
+        [self updateDynamicTitleForSpecifier:specifier];
         [self reloadSpecifier:specifier animated:YES];
         CFNotificationCenterPostNotification(CFNotificationCenterGetDarwinNotifyCenter(), CFSTR(kPrefsChangedNotification), NULL, NULL, YES);
     }]];
@@ -159,7 +162,7 @@
     NSUserDefaults *defaults = [[NSUserDefaults alloc] initWithSuiteName:kPrefsSuite];
     NSString *currentHex = [defaults stringForKey:key] ?: defaultHex;
 
-    UIAlertController *sheet = [UIAlertController alertControllerWithTitle:[specifier propertyForKey:@"label"]
+    UIAlertController *sheet = [UIAlertController alertControllerWithTitle:[specifier propertyForKey:@"baseTitle"]
                                                                    message:[NSString stringWithFormat:@"当前色值：%@", currentHex]
                                                             preferredStyle:UIAlertControllerStyleActionSheet];
 
@@ -225,6 +228,7 @@
         NSUserDefaults *defaults = [[NSUserDefaults alloc] initWithSuiteName:kPrefsSuite];
         [defaults removePersistentDomainForName:kPrefsSuite];
         [defaults synchronize];
+        _specifiers = nil;
         [self reloadSpecifiers];
         CFNotificationCenterPostNotification(CFNotificationCenterGetDarwinNotifyCenter(), CFSTR(kPrefsChangedNotification), NULL, NULL, YES);
     }]];
