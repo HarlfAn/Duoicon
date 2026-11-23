@@ -7,7 +7,7 @@ BUNDLE_NAME = CrispDuoStatusPrefs
 
 CrispDuoStatusPrefs_FILES = CDSRootListController.m
 CrispDuoStatusPrefs_FRAMEWORKS = UIKit Foundation
-CrispDuoStatusPrefs_PRIVATE_FRAMEWORKS = Preferences
+CrispDuoStatusPrefs_LDFLAGS = -Wl,-undefined,dynamic_lookup
 CrispDuoStatusPrefs_INSTALL_PATH = /Library/PreferenceBundles
 CrispDuoStatusPrefs_CFLAGS = -fobjc-arc -Wall
 
